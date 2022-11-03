@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <h1 class="text-3xl font-bold underline">
     Vue3 weather app
-  </div>
+  </h1>
 </template>
