@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+const colors = require("tailwindcss/colors.js");
 module.exports = {
   content: [
     "./index.html",
@@ -6,8 +7,10 @@ module.exports = {
   ],
   theme: {
     extend: {
-      "weather-primary": "#00668A",
-      "weather-secondary": "#004E71"
+      colors: {
+        "weather-primary": "#00668A",
+          "weather-secondary": "#004E71"
+      }
     },
     fontFamily: {
       Roboto: [ "Roboto, sans-serif" ]

@@ -5,6 +5,12 @@
     "module": "ESNext",
     "moduleResolution": "Node",
     "strict": true,
+    "paths": {
+      "@/*": ["./src/*", "./dist/*"]
+    },
+    "types": [
+      "node"
+    ],
     "jsx": "preserve",
     "resolveJsonModule": true,
     "isolatedModules": true,
