@@ -1,8 +1,8 @@
 <template>
   <div class="flex flex-col min-h-screen font-Roboto bg-weather-primary">
     <Navigation />
-    <font-awesome-icon icon="fa-solid fa-user-secret" />
-    Vue3 weather app
+
+    <RouterView />
   </div>
 </template>
 
