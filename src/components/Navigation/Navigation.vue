@@ -8,16 +8,42 @@
 
       <div class="flex gap-3 flex-1 justify-end">
         <font-awesome-icon
-          icon="fa-solid fa-circle-info text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+          @click="toggleModal"
+          icon="fa-solid fa-circle-info"
+          class="text-xl hover:text-weather-secondary duration-150 cursor-pointer"
         />
         <font-awesome-icon
-            icon="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+            icon="fa-solid fa-plus"
+            class="text-xl hover:text-weather-secondary duration-150 cursor-pointer"
         />
       </div>
+
+      <BaseModal :isActive="isActiveModal" @close-modal="toggleModal">
+        <div class="text-black">
+          <h1 class="text-2xl mb-1">Weather App</h1>
+
+          <p class="mb-4">Allows you to find and see current weather of chosen cities.</p>
+
+          <ol class="list-decimal list-inside mb-4">
+            <li>Search city by typing the name in search bar.</li>
+            <li>Select city with weather results.</li>
+            <li>Track the city by clicing on the "+" icon. This will save the city to view at a later time.</li>
+          </ol>
+
+          <p>Also, you can remove the city at the bottom of the page.</p>
+        </div>
+      </BaseModal>
     </nav>
   </header>
 </template>
 
 <script setup lang="ts">
-  console.log('navigation component');
+import { ref } from 'vue';
+import BaseModal from '@/components/Modals';
+
+const isActiveModal = ref(false);
+
+function toggleModal() {
+  isActiveModal.value = !isActiveModal.value;
+}
 </script>
