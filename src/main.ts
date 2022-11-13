@@ -13,6 +13,6 @@ import './assets/tailwind.css';
 library.add(faUserSecret, faSun, faCircleInfo, faPlus);
 
 createApp(App)
-  // .use(router)
+  .use(router)
   .component('font-awesome-icon', FontAwesomeIcon)
   .mount('#app');
