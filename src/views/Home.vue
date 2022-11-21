@@ -41,8 +41,6 @@ const getSearchResults = () => {
       searchResults.value = await getLocations(searchInput.value);
       return;
     }
-
-    searchResults.value = null;
-  }, 300)
+  }, 1000)
 };
 </script>
