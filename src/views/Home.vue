@@ -27,23 +27,18 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import axios from 'axios';
+import { getLocations } from '@/services/api/search';
 
 const searchInput = ref('');
 const searchTimeout = ref<ReturnType<typeof setTimeout>>();
-const searchResults = ref(null);
-
-const mapboxApiKey = 'pk.eyJ1Ijoiam9sbGkyNyIsImEiOiJjbGFwODMzYXIwejN0M3FuMGJjdG5hZ2VlIn0.bB8C7C18fcJe1Y2THpPBwQ';
+const searchResults = ref<string[] | null>(null);
 
 const getSearchResults = () => {
   clearTimeout(searchTimeout.value);
 
   searchTimeout.value = setTimeout(async () => {
     if (searchInput.value !== '') {
-      const result = await axios.get(
-    `https://api.mapbox.com/geocoding/v5/mapbox.places/${searchInput.value}.json?access_token=${mapboxApiKey}&types=place`
-      );
-      searchResults.value = result.data.features;
+      searchResults.value = await getLocations(searchInput.value);
       return;
     }
 
@@ -51,7 +46,3 @@ const getSearchResults = () => {
   }, 300)
 };
 </script>
-
-<style scoped>
-
-</style>

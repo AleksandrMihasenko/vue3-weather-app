@@ -9,7 +9,8 @@
       "@/*": ["./src/*", "./dist/*"]
     },
     "types": [
-      "node"
+      "node",
+      "vite/client"
     ],
     "jsx": "preserve",
     "resolveJsonModule": true,
