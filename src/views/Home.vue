@@ -19,6 +19,7 @@
           <li
             v-for="searchResult in searchResults"
             :key="searchResult.id"
+            @click="displayCity(searchResult)"
             class="py-2 cursor-pointer"
           >
             {{ searchResult.place_name }}
@@ -31,13 +32,16 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 import { getLocations } from '@/services/api/search';
+
+const router = useRouter();
 
 const searchInput = ref('');
 const searchTimeout = ref<ReturnType<typeof setTimeout>>();
 const searchResults = ref<string[] | null>(null);
 
-const getSearchResults = () => {
+function getSearchResults() {
   clearTimeout(searchTimeout.value);
 
   searchTimeout.value = setTimeout(async () => {
@@ -46,5 +50,19 @@ const getSearchResults = () => {
       return;
     }
   }, 1000)
-};
+}
+
+function displayCity(searchResult: unknown) {
+  const [ city, state ] = searchResult.place_name.split(',');
+
+  router.push({
+    name: 'CityView',
+    params: { state: state.replaceAll(' ', ''), city: city },
+    query: {
+      lat: searchResult.geometry.coordinates[1],
+      lng: searchResult.geometry.coordinates[0],
+      preview: 'true'
+    }
+  })
+}
 </script>
