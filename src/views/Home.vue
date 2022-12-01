@@ -33,7 +33,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getLocations } from '@/services/api/search';
+import { getLocations } from '@/services/api/searchCity';
 
 const router = useRouter();
 
