@@ -1,6 +1,5 @@
 <template>
   <div>
-    <div>City view</div>
     <Suspense>
       <AsyncCityView />
 
