@@ -37,8 +37,31 @@
 
     <div class="max-w-screen-md w-full py-12">
       <div class="mx-8 text-white">
-        <h2 class="mb-4">Hourly weather</h2>
+        <h2 class="mb-4">5-day forecast</h2>
+
+        <div
+          v-for="hourData in weatherHourlyData.data.list"
+          :key="hourData.dt"
+          class="flex items-center"
+        >
+          <p class="flex-1">
+            {{ new Date(hourData.dt * 1000).toLocaleDateString('en-gb', { weekday: 'long' }) }}
+          </p>
+
+          <img
+            class="w-auto h-[50px] object-cover"
+            :src="`http://openweathermap.org/img/wn/${hourData.weather[0].icon}@2x.png`"
+            alt="weather icon"
+          >
+
+          <div class="flex gap-2 flex-1 justify-end">
+            <p>H: {{ Math.round(hourData.main.temp_min) }}&deg;</p>
+            <p>L: {{ Math.round(hourData.main.temp_max) }}&deg;</p>
+          </div>
+        </div>
       </div>
+
+      <hr class="border-white border-opacity-10 border w-full">
     </div>
   </div>
 </template>
@@ -53,11 +76,18 @@ const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;
 
 async function getWeatherData() {
   return await axios.get(
-  `https://api.openweathermap.org/data/2.5/weather?lat=${route.query.lat}&lon=${route.query.lng}&appid=${openWeatherApiKey}&units=imperial`
+  `https://api.openweathermap.org/data/2.5/weather?lat=${route.query.lat}&lon=${route.query.lng}&appid=${openWeatherApiKey}&units=metric`
   )
   .catch(error => console.log(error));
 }
 
+async function getHourlyWeatherData() {
+  return await axios.get(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${route.query.lat}&lon=${route.query.lng}&appid=${openWeatherApiKey}&units=metric`
+  )
+      .catch(error => console.log(error));
+}
+
 const weatherData = await getWeatherData();
-console.log(weatherData)
+const weatherHourlyData = await getHourlyWeatherData();
 </script>
