@@ -11,5 +11,5 @@
 </template>
 
 <script setup lang="ts">
-import AsyncCityView from '@/components/AsyncCityView/AsyncCityView.vue';
+import AsyncCityView from '@/components/CityInfo/AsyncCityView.vue';
 </script>

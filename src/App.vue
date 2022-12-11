@@ -7,6 +7,6 @@
 </template>
 
 <script setup lang="ts">
-import Navigation from '@/components/Navigation';
+import { Navigation } from '@/components/Navigation';
 
 </script>

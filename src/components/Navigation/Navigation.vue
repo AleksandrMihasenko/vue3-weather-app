@@ -41,21 +41,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { useRoute, useRouter, LocationQueryValue } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
+import { locationData } from '@/types/locationData';
 import { uid } from 'uid';
 import BaseModal from '@/components/Modals';
-
-interface Coordinates {
-  lat: LocationQueryValue | LocationQueryValue[],
-  lng: LocationQueryValue | LocationQueryValue[]
-}
-
-interface locationData {
-  id: string,
-  state: string | string[],
-  city: string | string[],
-  coords: Coordinates
-}
 
 const route = useRoute();
 const router = useRouter();

@@ -1,3 +1,1 @@
-import Navigation from './Navigation.vue';
-
-export default Navigation;
+export { default as Navigation } from './Navigation.vue';

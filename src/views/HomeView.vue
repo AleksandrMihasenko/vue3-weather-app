@@ -27,6 +27,16 @@
         </template>
       </ul>
     </div>
+
+    <div class="flex flex-col gap-4">
+<!--      <Suspense>-->
+<!--        <CityList />-->
+
+<!--        <template #fallback>-->
+<!--          <p class="text-center">Loading...</p>-->
+<!--        </template>-->
+<!--      </Suspense>-->
+    </div>
   </main>
 </template>
 
@@ -34,6 +44,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getLocations } from '@/services/api/searchCity';
+// import CityList from '@/components/CityInfo/CityList.vue';
 
 const router = useRouter();
 
