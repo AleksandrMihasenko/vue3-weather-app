@@ -13,8 +13,10 @@
           class="text-xl hover:text-weather-secondary duration-150 cursor-pointer"
         />
         <font-awesome-icon
-            icon="fa-solid fa-plus"
-            class="text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+          v-if="route.query.preview"
+          icon="fa-solid fa-plus"
+          class="text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+          @click="saveCity"
         />
       </div>
 
@@ -39,11 +41,54 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import { useRoute, useRouter, LocationQueryValue } from 'vue-router';
+import { uid } from 'uid';
 import BaseModal from '@/components/Modals';
 
+interface Coordinates {
+  lat: LocationQueryValue | LocationQueryValue[],
+  lng: LocationQueryValue | LocationQueryValue[]
+}
+
+interface locationData {
+  id: string,
+  state: string | string[],
+  city: string | string[],
+  coords: Coordinates
+}
+
+const route = useRoute();
+const router = useRouter();
+
 const isActiveModal = ref(false);
+const savedCities = ref<locationData[]>([]);
 
 function toggleModal() {
   isActiveModal.value = !isActiveModal.value;
+}
+
+function saveCity() {
+  const data = localStorage.getItem('savedCities');
+
+  if (data) {
+    savedCities.value = JSON.parse(data);
+  }
+
+  const locationData: locationData = {
+    id: uid(),
+    state: route.params.state,
+    city: route.params.city,
+    coords: {
+      lat: route.query.lat,
+      lng: route.query.lng
+    }
+  };
+
+  savedCities.value?.push(locationData);
+  localStorage.setItem('savedCities', JSON.stringify(savedCities.value));
+
+  let query = Object.assign({}, route.query);
+  delete query.preview;
+  router.replace({ query });
 }
 </script>
