@@ -35,7 +35,7 @@ async function getCities() {
   savedCities.value.forEach(city => {
     requests.push(
       axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${city.coords.lat}&lon=${city.coords.lng}&appid=${openWeatherApiKey}&units=metric`
+    `https://api.openweathermap.org/data/2.5/weather?lat=${city.coords.lat}&lon=${city.coords.lng}&appid=${openWeatherApiKey}&units=metric`
       )
     )
   });
@@ -49,7 +49,7 @@ async function getCities() {
 
 function goToCitiView(city: any) {
   router.push({
-    name: city.view,
+    name: 'CityView',
     params: { state: city.state, city: city.city },
     query: { id: city.id, lat: city.coords.lat, lng: city.coords.lng }
   });

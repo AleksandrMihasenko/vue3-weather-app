@@ -13,7 +13,7 @@
         v-if="searchResults"
         class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
       >
-        <p v-if="searchResults.length === 0">No results finding, try a different city.</p>
+        <li v-if="searchResults.length === 0">No results finding, try a different city.</li>
 
         <template v-else>
           <li

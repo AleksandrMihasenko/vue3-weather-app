@@ -105,7 +105,7 @@ function removeCity() {
     cities = JSON.parse(data);
   }
 
-  const updatedCities = cities.filter(city => city.id !== route.query);
+  const updatedCities = cities.filter(city => city.id !== route.query.id);
 
   localStorage.setItem('savedCities', JSON.stringify(updatedCities));
   router.push({ name: 'HomeView' })

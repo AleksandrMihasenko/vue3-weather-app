@@ -28,5 +28,4 @@
 const props = defineProps<{
   city: Object
 }>();
-console.log(props.city)
 </script>
