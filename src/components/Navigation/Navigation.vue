@@ -78,6 +78,7 @@ function saveCity() {
 
   let query = Object.assign({}, route.query);
   delete query.preview;
+  query.id = locationData.id;
   router.replace({ query });
 }
 </script>

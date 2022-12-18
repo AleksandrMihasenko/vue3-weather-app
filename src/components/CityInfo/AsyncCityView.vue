@@ -62,15 +62,24 @@
       </div>
 
       <hr class="border-white border-opacity-10 border w-full">
+
+      <div
+        @click="removeCity"
+        class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
+      >
+        <font-awesome-icon icon="fa-trash-can" />
+        <p>Remove city</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import axios from 'axios';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 
 const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;
 
@@ -86,6 +95,20 @@ async function getHourlyWeatherData() {
       `https://api.openweathermap.org/data/2.5/forecast?lat=${route.query.lat}&lon=${route.query.lng}&appid=${openWeatherApiKey}&units=metric`
   )
       .catch(error => console.log(error));
+}
+
+function removeCity() {
+  let cities;
+  const data = localStorage.getItem('savedCities');
+
+  if (data) {
+    cities = JSON.parse(data);
+  }
+
+  const updatedCities = cities.filter(city => city.id !== route.query);
+
+  localStorage.setItem('savedCities', JSON.stringify(updatedCities));
+  router.push({ name: 'HomeView' })
 }
 
 const weatherData = await getWeatherData();
