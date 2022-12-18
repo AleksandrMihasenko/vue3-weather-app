@@ -33,7 +33,7 @@
         <CityList />
 
         <template #fallback>
-          <p class="text-center">Loading...</p>
+          <CityCardLayout />
         </template>
       </Suspense>
     </div>
@@ -45,6 +45,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getLocations } from '@/services/api/searchCity';
 import { CityList } from '@/components/CityInfo';
+import { CityCardLayout } from '@/components/CityInfo';
 
 const router = useRouter();
 

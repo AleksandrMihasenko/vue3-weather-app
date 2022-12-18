@@ -16,7 +16,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
 import { locationData } from '@/types/locationData';
-import { CityCard } from "@/components/CityInfo";
+import { CityCard } from '@/components/CityInfo';
 
 const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;
 
@@ -41,6 +41,8 @@ async function getCities() {
   });
 
   const weatherData = await Promise.all(requests);
+
+  await new Promise((res) => setTimeout(res, 1000));
 
   weatherData.forEach((value, index) => {
     savedCities.value[index].weather = value.data;

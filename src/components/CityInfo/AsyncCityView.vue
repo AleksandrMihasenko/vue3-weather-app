@@ -90,6 +90,8 @@ async function getWeatherData() {
   .catch(error => console.log(error));
 }
 
+await new Promise((res) => setTimeout(res, 1000));
+
 async function getHourlyWeatherData() {
   return await axios.get(
       `https://api.openweathermap.org/data/2.5/forecast?lat=${route.query.lat}&lon=${route.query.lng}&appid=${openWeatherApiKey}&units=metric`
