@@ -8,13 +8,13 @@
         <Transition name="modal-inner">
           <div
               v-if="isActive"
-              class="p-4 bg-white self-start mt-32 max-w-screen-md"
+              class="flex flex-col p-4 bg-white self-start mt-32 max-w-screen-md"
           >
             <slot />
 
             <button
                 @click="$emit('closeModal')"
-                class="text-white mt-8 bg-weather-primary py-2 px-6"
+                class="text-white mt-8 bg-weather-primary py-2 px-6 max-w-xs"
             >Close</button>
           </div>
         </Transition>
