@@ -10,7 +10,7 @@
       >
 
       <ul
-        v-if="searchResults"
+        v-if="searchResults && isCorrectInfo"
         class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
       >
         <li v-if="searchResults.length === 0">No results finding, try a different city.</li>
@@ -26,6 +26,14 @@
           </li>
         </template>
       </ul>
+
+      <BaseModal :isActive="!isCorrectInfo" @close-modal="isCorrectInfo = true">
+        <div class="text-black text-center">
+          <h1 class="text-2xl mb-1">{{searchResults.message}}</h1>
+
+          <p class="mb-4">Try again later.</p>
+        </div>
+      </BaseModal>
     </div>
 
     <div class="flex flex-col gap-4">
@@ -46,12 +54,15 @@ import { useRouter } from 'vue-router';
 import { getLocations } from '@/services/api/searchCity';
 import { CityList } from '@/components/CityInfo';
 import { CityCardLayout } from '@/components/CityInfo';
+import BaseModal from '@/components/Modals';
+import { ErrorRequest } from '@/types/errorRequest';
 
 const router = useRouter();
 
 const searchInput = ref('');
 const searchTimeout = ref<ReturnType<typeof setTimeout>>();
-const searchResults = ref<string[] | null>(null);
+const searchResults = ref<string[] | ErrorRequest | null>(null);
+const isCorrectInfo = ref(true);
 
 function getSearchResults() {
   clearTimeout(searchTimeout.value);
@@ -59,6 +70,10 @@ function getSearchResults() {
   searchTimeout.value = setTimeout(async () => {
     if (searchInput.value !== '') {
       searchResults.value = await getLocations(searchInput.value);
+
+      if (searchResults.value?.message) {
+        isCorrectInfo.value = false;
+      }
       return;
     }
   }, 1000)
