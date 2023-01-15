@@ -1,7 +1,5 @@
 <template>
   <main class="container text-white">
-    {{searchResults}}
-    {{isCorrectInfo}}
     <div class="pt-4 mb-8 relative">
       <input
           v-model="searchInput"

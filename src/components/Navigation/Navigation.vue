@@ -44,6 +44,7 @@ import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { LocationInfo } from '@/types/LocationInfo';
 import { uid } from 'uid';
+import { saveCityInLocalStorage } from '@/services/api/saveCityInLocalStorage';
 import BaseModal from '@/components/Modals';
 
 const route = useRoute();
@@ -57,13 +58,7 @@ function toggleModal() {
 }
 
 function saveCity() {
-  const data = localStorage.getItem('savedCities');
-
-  if (data) {
-    savedCities.value = JSON.parse(data);
-  }
-
-  const locationData: LocationInfo = {
+  const locationInfo: LocationInfo = {
     id: uid(),
     state: route.params.state,
     city: route.params.city,
@@ -73,12 +68,6 @@ function saveCity() {
     }
   };
 
-  savedCities.value?.push(locationData);
-  localStorage.setItem('savedCities', JSON.stringify(savedCities.value));
-
-  let query = Object.assign({}, route.query);
-  delete query.preview;
-  query.id = locationData.id;
-  router.replace({ query });
+  saveCityInLocalStorage(locationInfo);
 }
 </script>
