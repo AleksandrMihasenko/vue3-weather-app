@@ -15,7 +15,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import { locationData } from '@/types/locationData';
+import { locationData } from '@/types/LocationInfo';
 import { CityCard } from '@/components/CityInfo';
 
 const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;

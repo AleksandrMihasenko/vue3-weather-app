@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { locationData } from '@/types/locationData';
+import { LocationInfo } from '@/types/LocationInfo';
 import { uid } from 'uid';
 import BaseModal from '@/components/Modals';
 
@@ -50,7 +50,7 @@ const route = useRoute();
 const router = useRouter();
 
 const isActiveModal = ref(false);
-const savedCities = ref<locationData[]>([]);
+const savedCities = ref<LocationInfo[]>([]);
 
 function toggleModal() {
   isActiveModal.value = !isActiveModal.value;
@@ -63,7 +63,7 @@ function saveCity() {
     savedCities.value = JSON.parse(data);
   }
 
-  const locationData: locationData = {
+  const locationData: LocationInfo = {
     id: uid(),
     state: route.params.state,
     city: route.params.city,

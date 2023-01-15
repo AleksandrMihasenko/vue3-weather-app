@@ -1,5 +1,7 @@
 <template>
   <main class="container text-white">
+    {{searchResults}}
+    {{isCorrectInfo}}
     <div class="pt-4 mb-8 relative">
       <input
           v-model="searchInput"
@@ -10,7 +12,7 @@
       >
 
       <ul
-        v-if="searchResults && isCorrectInfo"
+        v-if="searchResults.length && isCorrectInfo"
         class="absolute bg-weather-secondary text-white w-full shadow-md py-2 px-1 top-[66px]"
       >
         <li v-if="searchResults.length === 0">No results finding, try a different city.</li>
@@ -51,17 +53,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { getLocations } from '@/services/api/searchCity';
+import { getLocations } from '@/services/api/getLocations';
 import { CityList } from '@/components/CityInfo';
 import { CityCardLayout } from '@/components/CityInfo';
 import BaseModal from '@/components/Modals';
-import { ErrorRequest } from '@/types/errorRequest';
+import { LocationDataResponse } from '@/types/api/LocationDataResponse';
 
 const router = useRouter();
 
 const searchInput = ref('');
 const searchTimeout = ref<ReturnType<typeof setTimeout>>();
-const searchResults = ref<string[] | ErrorRequest | null>(null);
+const searchResults = ref<LocationDataResponse[]>([]);
 const isCorrectInfo = ref(true);
 
 function getSearchResults() {
@@ -71,7 +73,7 @@ function getSearchResults() {
     if (searchInput.value !== '') {
       searchResults.value = await getLocations(searchInput.value);
 
-      if (searchResults.value?.message) {
+      if (searchResults.value.message) {
         isCorrectInfo.value = false;
       }
       return;
@@ -79,12 +81,12 @@ function getSearchResults() {
   }, 1000)
 }
 
-function displayCity(searchResult: unknown) {
+function displayCity(searchResult: LocationDataResponse) {
   const [ city, state ] = searchResult.place_name.split(',');
 
   router.push({
     name: 'CityView',
-    params: { state: state.replaceAll(' ', ''), city: city },
+    params: { state: state.replaceAll(' ', ''), city },
     query: {
       lat: searchResult.geometry.coordinates[1],
       lng: searchResult.geometry.coordinates[0],

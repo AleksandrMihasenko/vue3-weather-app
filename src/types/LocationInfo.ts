@@ -1,14 +1,14 @@
 import { LocationQueryValue } from 'vue-router';
 
-export interface locationCoordinates {
+export interface LocationCoordinates {
   lat: LocationQueryValue | LocationQueryValue[],
   lng: LocationQueryValue | LocationQueryValue[]
 }
 
-export interface locationData {
+export interface LocationInfo {
   id: string,
   state: string | string[],
   city: string | string[],
-  coords: locationCoordinates,
+  coords: LocationCoordinates,
   weather?: null
 }
