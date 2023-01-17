@@ -12,5 +12,5 @@
 
 <script setup lang="ts">
 import { AsyncCityView } from '@/components/CityInfo';
-import { CityViewLayout } from '@/components/CityInfo';
+import { CityViewLayout } from '@/components/Layouts';
 </script>

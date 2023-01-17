@@ -51,7 +51,6 @@ const route = useRoute();
 const router = useRouter();
 
 const isActiveModal = ref(false);
-const savedCities = ref<LocationInfo[]>([]);
 
 function toggleModal() {
   isActiveModal.value = !isActiveModal.value;
@@ -69,5 +68,10 @@ function saveCity() {
   };
 
   saveCityInLocalStorage(locationInfo);
+
+  let query = Object.assign({});
+  delete query.preview;
+  query.id = locationInfo.id;
+  router.replace({ query });
 }
 </script>

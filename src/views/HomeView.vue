@@ -53,7 +53,7 @@ import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { getLocations } from '@/services/api/getLocations';
 import { CityList } from '@/components/CityInfo';
-import { CityCardLayout } from '@/components/CityInfo';
+import { CityCardLayout } from '@/components/Layouts';
 import BaseModal from '@/components/Modals';
 import { LocationDataResponse } from '@/types/api/LocationDataResponse';
 
