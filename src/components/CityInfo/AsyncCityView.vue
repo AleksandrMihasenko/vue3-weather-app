@@ -40,7 +40,7 @@
         <h2 class="mb-4">5-day forecast</h2>
 
         <div
-          v-for="hourData in weatherHourlyData.data.list"
+          v-for="hourData in weatherHourlyData"
           :key="hourData.dt"
           class="flex items-center"
         >
@@ -75,13 +75,19 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
+import { LocationInfo } from '@/types/LocationInfo';
+import { getHourlyWeather } from '@/services/api/getHorlyWeather';
+import { CityWeather } from '@/types/CityWeather';
 
 const route = useRoute();
 const router = useRouter();
 
 const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;
+
+const weatherHourlyData = ref<CityWeather[]>([]);
 
 async function getWeatherData() {
   return await axios.get(
@@ -92,13 +98,6 @@ async function getWeatherData() {
 
 await new Promise((res) => setTimeout(res, 1000));
 
-async function getHourlyWeatherData() {
-  return await axios.get(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${route.query.lat}&lon=${route.query.lng}&appid=${openWeatherApiKey}&units=metric`
-  )
-      .catch(error => console.log(error));
-}
-
 function removeCity() {
   let cities;
   const data = localStorage.getItem('savedCities');
@@ -107,12 +106,12 @@ function removeCity() {
     cities = JSON.parse(data);
   }
 
-  const updatedCities = cities.filter(city => city.id !== route.query.id);
+  const updatedCities = cities.filter((city: LocationInfo) => city.id !== route.query.id);
 
   localStorage.setItem('savedCities', JSON.stringify(updatedCities));
   router.push({ name: 'HomeView' })
 }
 
 const weatherData = await getWeatherData();
-const weatherHourlyData = await getHourlyWeatherData();
+weatherHourlyData.value = await getHourlyWeather(route.query.lat, route.query.lng);
 </script>

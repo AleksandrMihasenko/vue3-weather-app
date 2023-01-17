@@ -15,14 +15,14 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import axios from 'axios';
-import { locationData } from '@/types/LocationInfo';
+import { LocationInfo } from '@/types/LocationInfo';
 import { CityCard } from '@/components/CityInfo';
 
 const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;
 
 const router = useRouter();
 
-const savedCities = ref<locationData[]>([]);
+const savedCities = ref<LocationInfo[]>([]);
 
 async function getCities() {
   const data = localStorage.getItem('savedCities');
@@ -49,7 +49,7 @@ async function getCities() {
   });
 }
 
-function goToCitiView(city: any) {
+function goToCitiView(city: LocationInfo) {
   router.push({
     name: 'CityView',
     params: { state: city.state, city: city.city },
