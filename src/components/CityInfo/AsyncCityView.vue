@@ -13,22 +13,22 @@
       </p>
 
       <p class="text-8xl mb-8">
-        {{ Math.round(weatherData.data.main.temp) }}&deg;
+        {{ Math.round(weatherWeeklyData.main.temp) }}&deg;
       </p>
 
       <p>
         Feels like
-        {{ Math.round(weatherData.data.main.feels_like) }}
+        {{ Math.round(weatherWeeklyData.main.feels_like) }}
         &deg;
       </p>
 
       <p class="capitalize">
-        {{ weatherData.data.weather[0].description }}
+        {{ weatherWeeklyData.weather[0].description }}
       </p>
 
       <img
         class="w-[150px] h-auto"
-        :src="`http://openweathermap.org/img/wn/${weatherData.data.weather[0].icon}@2x.png`"
+        :src="`http://openweathermap.org/img/wn/${ weatherWeeklyData.weather[0].icon }@2x.png`"
         alt="weather icon"
       >
     </div>
@@ -50,7 +50,7 @@
 
           <img
             class="w-auto h-[50px] object-cover"
-            :src="`http://openweathermap.org/img/wn/${hourData.weather[0].icon}@2x.png`"
+            :src="`http://openweathermap.org/img/wn/${ hourData.weather[0].icon }@2x.png`"
             alt="weather icon"
           >
 
@@ -75,28 +75,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
-import axios from 'axios';
 import { useRoute, useRouter } from 'vue-router';
-import { LocationInfo } from '@/types/LocationInfo';
-import { getHourlyWeather } from '@/services/api/getHorlyWeather';
-import { CityWeather } from '@/types/CityWeather';
+import { LocationInfo, LocationCoordinates } from '@/types/LocationInfo';
+import { getHourlyWeather, getWeeklyWeather } from '@/services/api/getOpenWeatherData';
 
 const route = useRoute();
 const router = useRouter();
+const query: LocationCoordinates = { lat: route.query.lat, lng: route.query.lng };
 
-const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;
-
-const weatherHourlyData = ref<CityWeather[]>([]);
-
-async function getWeatherData() {
-  return await axios.get(
-  `https://api.openweathermap.org/data/2.5/weather?lat=${route.query.lat}&lon=${route.query.lng}&appid=${openWeatherApiKey}&units=metric`
-  )
-  .catch(error => console.log(error));
-}
-
-await new Promise((res) => setTimeout(res, 1000));
+const weatherWeeklyData = await getWeeklyWeather(query);
+const weatherHourlyData = await getHourlyWeather(query);
 
 function removeCity() {
   let cities;
@@ -111,7 +99,4 @@ function removeCity() {
   localStorage.setItem('savedCities', JSON.stringify(updatedCities));
   router.push({ name: 'HomeView' })
 }
-
-const weatherData = await getWeatherData();
-weatherHourlyData.value = await getHourlyWeather(route.query.lat, route.query.lng);
 </script>
