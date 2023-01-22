@@ -16,7 +16,7 @@
           v-if="route.query.preview"
           icon="fa-solid fa-plus"
           class="text-xl hover:text-weather-secondary duration-150 cursor-pointer"
-          @click="saveCity"
+          @click="saveCityInLocalStorage"
         />
       </div>
 
@@ -42,36 +42,17 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
-import { LocationInfo } from '@/types/LocationInfo';
-import { uid } from 'uid';
-import { saveCityInLocalStorage } from '@/services/api/saveCityInLocalStorage';
+import { useLocalStorageAdapter } from '@/composables/LocalStorageAdapter';
 import BaseModal from '@/components/Modals';
 
 const route = useRoute();
 const router = useRouter();
 
+const { saveCityInLocalStorage } = useLocalStorageAdapter();
+
 const isActiveModal = ref(false);
 
 function toggleModal() {
   isActiveModal.value = !isActiveModal.value;
-}
-
-function saveCity() {
-  const locationInfo: LocationInfo = {
-    id: uid(),
-    state: route.params.state,
-    city: route.params.city,
-    coords: {
-      lat: route.query.lat,
-      lng: route.query.lng
-    }
-  };
-
-  saveCityInLocalStorage(locationInfo);
-
-  let query = Object.assign({});
-  delete query.preview;
-  query.id = locationInfo.id;
-  router.replace({ query });
 }
 </script>

@@ -64,7 +64,7 @@
       <hr class="border-white border-opacity-10 border w-full">
 
       <div
-        @click="removeCity"
+        @click="removeCityFromLocalStorage()"
         class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
       >
         <font-awesome-icon icon="fa-trash-can" />
@@ -76,27 +76,17 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
-import { LocationInfo, LocationCoordinates } from '@/types/LocationInfo';
+import { LocationCoordinates } from '@/types/LocationInfo';
 import { getHourlyWeather, getWeeklyWeather } from '@/services/api/getOpenWeatherData';
+import { useLocalStorageAdapter } from '@/composables/LocalStorageAdapter';
 
 const route = useRoute();
 const router = useRouter();
+
 const query: LocationCoordinates = { lat: route.query.lat, lng: route.query.lng };
 
 const weatherWeeklyData = await getWeeklyWeather(query);
 const weatherHourlyData = await getHourlyWeather(query);
 
-function removeCity() {
-  let cities;
-  const data = localStorage.getItem('savedCities');
-
-  if (data) {
-    cities = JSON.parse(data);
-  }
-
-  const updatedCities = cities.filter((city: LocationInfo) => city.id !== route.query.id);
-
-  localStorage.setItem('savedCities', JSON.stringify(updatedCities));
-  router.push({ name: 'HomeView' })
-}
+const { removeCityFromLocalStorage } = useLocalStorageAdapter();
 </script>
