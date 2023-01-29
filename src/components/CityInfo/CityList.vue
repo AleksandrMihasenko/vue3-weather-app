@@ -12,32 +12,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import axios from 'axios';
-import { LocationInfo } from '@/types/LocationInfo';
+import { useLocalStorageAdapter } from '@/composables/LocalStorageAdapter';
+import { getWeeklyWeather } from '@/services/api/getOpenWeatherData';
+import { LocationCoordinates, LocationInfo } from '@/types/LocationInfo';
 import { CityCard } from '@/components/CityInfo';
 
-const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;
-
 const router = useRouter();
-
-const savedCities = ref<LocationInfo[]>([]);
+const { savedCities } = useLocalStorageAdapter();
 
 async function getCities() {
-  const data = localStorage.getItem('savedCities');
+  const requests: LocationInfo[] = [];
 
-  if (data) {
-    savedCities.value = JSON.parse(data)
-  }
+  savedCities.forEach(city => {
+    const query: LocationCoordinates = { lat: city.coords.lat, lng: city.coords.lng };
 
-  const requests: any = [];
-  savedCities.value.forEach(city => {
-    requests.push(
-      axios.get(
-    `https://api.openweathermap.org/data/2.5/weather?lat=${city.coords.lat}&lon=${city.coords.lng}&appid=${openWeatherApiKey}&units=metric`
-      )
-    )
+    requests.push(getWeeklyWeather(query) as unknown as LocationInfo);
   });
 
   const weatherData = await Promise.all(requests);
@@ -45,7 +35,7 @@ async function getCities() {
   await new Promise((res) => setTimeout(res, 1000));
 
   weatherData.forEach((value, index) => {
-    savedCities.value[index].weather = value.data;
+    savedCities[index].weather = value;
   });
 }
 

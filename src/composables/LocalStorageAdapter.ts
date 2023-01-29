@@ -6,11 +6,12 @@ export function useLocalStorageAdapter() {
   const route = useRoute();
   const router = useRouter();
   
-  const data = localStorage.getItem('savedCities');
-  let savedCities: LocationInfo[] = [];
+  let savedCities: LocationInfo[] = getCitiesFromLocalStorage();
   
-  if (data) {
-    savedCities = JSON.parse(data);
+  function getCitiesFromLocalStorage(): LocationInfo[] {
+    const data = localStorage.getItem('savedCities');
+    
+    return data ? JSON.parse(data) : null;
   }
   
   function saveCityInLocalStorage(): void {

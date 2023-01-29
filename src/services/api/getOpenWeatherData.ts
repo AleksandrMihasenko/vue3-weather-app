@@ -4,7 +4,7 @@ import { LocationCoordinates } from '@/types/LocationInfo';
 
 const openWeatherApiKey = import.meta.env.VITE_APP_OPEN_WEATHER_API_KEY;
 
-export async function getWeeklyWeather(query: LocationCoordinates) {
+export async function getWeeklyWeather(query: LocationCoordinates): Promise<CityWeather[]> {
   return await axios.get(
     `https://api.openweathermap.org/data/2.5/weather?lat=${query.lat}&lon=${query.lng}&appid=${openWeatherApiKey}&units=metric`
   )
